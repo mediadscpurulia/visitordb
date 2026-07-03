@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>District Science Centre, Purulia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #020617;
+      color: #f1f5f9;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    /* Background orbs */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-orbs .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.25;
+      animation: orbFloat 20s infinite alternate ease-in-out;
+    }
+    .bg-orbs .orb:nth-child(1) {
+      width: 40vw;
+      height: 40vw;
+      top: -10%;
+      left: -10%;
+      background: #2563eb;
+      animation-duration: 18s;
+    }
+    .bg-orbs .orb:nth-child(2) {
+      width: 35vw;
+      height: 35vw;
+      bottom: -10%;
+      right: -10%;
+      background: #06b6d4;
+      animation-duration: 22s;
+      animation-delay: 2s;
+    }
+    .bg-orbs .orb:nth-child(3) {
+      width: 25vw;
+      height: 25vw;
+      top: 40%;
+      left: 60%;
+      background: #8b5cf6;
+      animation-duration: 20s;
+      animation-delay: 4s;
+      opacity: 0.15;
+    }
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(60px, -40px) scale(1.1); }
+    }
+
+    main { position: relative; z-index: 1; }
+
+    /* Header */
+    .header-glass {
+      background: rgba(2, 6, 23, 0.75);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .header-border-glow { position: relative; }
+    .header-border-glow::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 1.25rem;
+      padding: 2px;
+      background: conic-gradient(from var(--angle, 0deg), transparent 30%, #22d3ee 50%, #0ea5e9 70%, transparent 90%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: rotateBorder 6s linear infinite;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    @keyframes rotateBorder { 0% { --angle: 0deg; } 100% { --angle: 360deg; } }
+
+    .logo-glow {
+      filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.2));
+      transition: all 0.5s ease;
+    }
+    .logo-glow:hover {
+      filter: drop-shadow(0 0 30px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 60px rgba(34, 211, 238, 0.2));
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    .header-title {
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 40%, #8b5cf6 70%, #22d3ee 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 5s ease-in-out infinite;
+    }
+    @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    .header-subtitle {
+      background: linear-gradient(90deg, #94a3b8, #cbd5e1, #94a3b8);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%, 100% { background-position: -200% 0; } 50% { background-position: 200% 0; } }
+
+    .header-dots { display: flex; gap: 6px; align-items: center; }
+    .header-dots span {
+      width: 5px; height: 5px; border-radius: 50%; background: #22d3ee;
+      opacity: 0.4; animation: dotPulse 2s ease-in-out infinite;
+    }
+    .header-dots span:nth-child(2) { animation-delay: 0.3s; opacity: 0.6; }
+    .header-dots span:nth-child(3) { animation-delay: 0.6s; opacity: 0.8; }
+    @keyframes dotPulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.5); opacity: 1; } }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 20px 50px -12px rgba(0,0,0,0.6);
+    }
+    .glass-light {
+      background: rgba(30, 41, 59, 0.45);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Typing Animation */
+    .typing-wrapper { display: inline-block; position: relative; }
+    .typing-text {
+      display: inline;
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 40%, #8b5cf6 70%, #22d3ee 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 5s ease-in-out infinite;
+    }
+    .typing-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background: linear-gradient(180deg, #22d3ee, #3b82f6);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.8s step-end infinite;
+      border-radius: 2px;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .magnetic-btn {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.08s ease-out;
+      will-change: transform;
+    }
+    .tilt-content { transform: translateZ(30px); }
+
+    .glow-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+    }
+    .glow-card::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: conic-gradient(from 0deg, transparent 60%, #22d3ee 70%, #0ea5e9 80%, transparent 90%);
+      animation: spinGlow 4s linear infinite;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 1.5rem;
+    }
+    .glow-card:hover::before { opacity: 1; }
+    .glow-card::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: #0f172a;
+      border-radius: 1.4rem;
+      z-index: 1;
+    }
+    .glow-content { position: relative; z-index: 2; }
+    @keyframes spinGlow { 100% { transform: rotate(360deg); } }
+
+    .shift-card {
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      border: 1px solid transparent;
+    }
+    .shift-card:hover {
+      transform: translateY(-10px) scale(1.01);
+      background: rgba(14, 165, 233, 0.08);
+      border-color: #22d3ee;
+      box-shadow: 0 20px 40px -12px rgba(34, 211, 238, 0.25);
+    }
+
+    .input-glass {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.25s ease;
+    }
+    .input-glass:focus {
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15);
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .input-glass::placeholder { color: #64748b; font-weight: 300; }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px -6px rgba(6, 182, 212, 0.3);
+    }
+    .submit-btn:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 12px 32px -8px rgba(6, 182, 212, 0.5);
+    }
+    .submit-btn:active:not(:disabled) { transform: scale(0.97); }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 20px; }
+
+    .footer-link { transition: all 0.2s ease; }
+    .footer-link:hover { text-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
+
+    .content-wrapper { position: relative; z-index: 1; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      z-index: 9999;
+      transform: translateX(120%);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+    .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .toast.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+    @media (max-width: 640px) {
+      .header-glass { padding: 0.75rem 1rem; }
+      .header-title { font-size: 0.65rem; }
+      .logo-glow { height: 2.5rem; }
+      .toast { bottom: 20px; right: 20px; left: 20px; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 header-border-glow">
+    <div class="header-glass rounded-2xl px-5 py-2.5 md:px-8 md:py-3 flex justify-between items-center transition-all duration-300">
+      <div class="flex items-center">
+        <img src="https://ncsm.gov.in/storage/files/image-7.png" alt="NCSM Logo" class="logo-glow h-10 md:h-14 w-auto object-contain transition-all duration-500">
+      </div>
+      <div class="flex items-center gap-3 md:gap-4">
+        <div class="header-dots"><span></span><span></span><span></span></div>
+        <div class="text-center">
+          <h1 class="header-title text-xs sm:text-sm md:text-xl font-extrabold uppercase tracking-[0.15em] leading-tight">
+            District Science Centre Purulia
+          </h1>
+          <span class="header-subtitle text-[8px] sm:text-[10px] md:text-xs font-medium tracking-[0.2em] uppercase block mt-0.5">
+            <i class="fas fa-flag text-[6px] md:text-[8px] mr-1 opacity-60"></i>
+            Government of India
+            <i class="fas fa-flag text-[6px] md:text-[8px] ml-1 opacity-60"></i>
+          </span>
+        </div>
+        <div class="header-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="flex items-center">
+        <img src="https://ncsm.gov.in/wp-content/uploads/2013/12/NCSM-Logo.png" alt="NCSM Logo" class="logo-glow h-10 md:h-14 w-auto object-contain transition-all duration-500">
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto flex flex-col gap-28 content-wrapper">
+
+    <section class="reveal flex flex-col items-center justify-center text-center min-h-[60vh] gap-8 mt-6">
+      <div class="inline-flex items-center gap-2 glass-light px-5 py-2 rounded-full text-sm text-cyan-300 border border-cyan-500/20 backdrop-blur-sm">
+        <i class="fas fa-atom fa-fw"></i> Empowering Minds Through Science
+      </div>
+      <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.15] max-w-4xl">
+        <span class="block text-slate-300 text-2xl md:text-4xl font-light mb-2">Welcome to</span>
+        <span class="typing-wrapper">
+          <span class="typing-text" id="typingText"></span>
+          <span class="typing-cursor" id="typingCursor"></span>
+        </span>
+      </h2>
+      <p class="text-slate-400 text-lg md:text-xl max-w-2xl font-light">
+        Please complete the visitor registration form below before entering the Science Centre.
+      </p>
+      <button class="magnetic-btn mt-6 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl text-white font-semibold text-base shadow-[0_8px_30px_rgba(34,211,238,0.3)] hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)] cursor-pointer flex items-center gap-3 backdrop-blur-sm">
+        <i class="fas fa-shield-alt text-lg"></i> Privacy Notice
+        <span class="text-xs font-light opacity-80 max-w-xs hidden sm:inline-block">Your personal information will be used only for visitor management, statistical analysis, and communication related to District Science Centre, Purulia.</span>
+        <span class="text-xs font-light opacity-80 sm:hidden">Tap for details</span>
+      </button>
+    </section>
+
+    <section class="reveal flex flex-col gap-8 max-w-3xl mx-auto w-full">
+      <div class="text-center">
+        <h3 class="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+          <i class="fas fa-user-edit text-cyan-400"></i> Visitor Registration
+        </h3>
+        <p class="text-slate-400 text-sm font-light">Please fill out your details below</p>
+      </div>
+
+      <div class="glass rounded-3xl p-6 md:p-8 border border-white/5">
+        <form id="registrationForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="flex flex-col gap-1.5 md:col-span-2">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-user text-cyan-400 text-[10px]"></i> Full Name <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="name" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="e.g. Arjun Das" required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-map-pin text-cyan-400 text-[10px]"></i> State/UT <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="state" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="West Bengal" required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-city text-cyan-400 text-[10px]"></i> District/City <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="district" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="Purulia" required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-phone-alt text-cyan-400 text-[10px]"></i> Mobile/WhatsApp <span class="text-red-400">*</span>
+            </label>
+            <input type="tel" id="mobile" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-envelope text-cyan-400 text-[10px]"></i> Email ID <span class="text-red-400">*</span>
+            </label>
+            <input type="email" id="email" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="you@example.com" required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-briefcase text-cyan-400 text-[10px]"></i> Profession <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="profession" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="Student, Teacher, etc." required>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fas fa-users text-cyan-400 text-[10px]"></i> Family Members <span class="text-red-400">*</span>
+            </label>
+            <input type="number" id="family" min="1" max="100" class="input-glass rounded-xl px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all" placeholder="1" required>
+          </div>
+          <button type="submit" id="submitBtn" class="md:col-span-2 mt-2 submit-btn text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all">
+            <i class="fas fa-paper-plane"></i> Submit Details
+          </button>
+          <div id="formMessage" class="md:col-span-2 text-center text-sm mt-1 min-h-[1.8rem]"></div>
+        </form>
+      </div>
+      <div class="text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400 text-sm font-medium tracking-wide">
+        <i class="fas fa-chart-line mr-2"></i>Your Registration Will Help Us To
+      </div>
+    </section>
+
+    <section class="reveal grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-6">
+      <div class="tilt-card glass rounded-3xl p-8 h-64 flex flex-col justify-center items-center text-center cursor-pointer border border-white/5 hover:border-cyan-500/30 transition-all">
+        <div class="tilt-content flex flex-col items-center">
+          <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-5 border border-blue-500/30 backdrop-blur-sm">
+            <i class="fas fa-clipboard-list text-blue-400 text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-white">Record visitor attendance</h4>
+          <p class="text-slate-400 text-sm mt-2">Track footfall and engagement</p>
+        </div>
+      </div>
+      <div class="glow-card rounded-3xl p-8 h-64 flex flex-col justify-center items-center text-center cursor-pointer">
+        <div class="glow-content flex flex-col items-center">
+          <div class="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center mb-5 border border-cyan-500/30 backdrop-blur-sm">
+            <i class="fas fa-star text-cyan-400 text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-white">Enhance your overall visit experience</h4>
+          <p class="text-slate-400 text-sm mt-2">Personalized recommendations</p>
+        </div>
+      </div>
+      <div class="shift-card glass rounded-3xl p-8 h-64 flex flex-col justify-center items-center text-center cursor-pointer border border-white/5">
+        <div class="flex flex-col items-center">
+          <div class="w-14 h-14 bg-indigo-500/20 rounded-2xl flex items-center justify-center mb-5 border border-indigo-500/30 backdrop-blur-sm">
+            <i class="fas fa-chart-pie text-indigo-400 text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-white">Understand visitor demographics and interests</h4>
+          <p class="text-slate-400 text-sm mt-2">Data-driven insights</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800/60 bg-slate-900/30 py-10 mt-12 backdrop-blur-xl relative z-10">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-4 text-center">
+      <a href="mailto:media.dscpurulia@gmail.com" class="text-cyan-400 hover:text-cyan-300 font-medium text-lg transition-all footer-link flex items-center gap-2">
+        <i class="fas fa-envelope"></i> media.dscpurulia@gmail.com
+      </a>
+      <p class="text-slate-500 text-sm flex items-center gap-2">
+        <i class="fas fa-copyright"></i> 2026 District Science Centre, Purulia. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // ===== CONFIGURATION =====
+      // IMPORTANT: Replace this with your actual Google Apps Script Web App URL
+      // After deploying your script, copy the URL and paste it here
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6PmgJjd6ljEvJ4rZQ1e4gyaxXRFwNQXFZ1pYUZFz_ADhT-6QRf53VYTAFuGmuG-NPqw/exec';
+      
+      // ===== TYPING ANIMATION =====
+      const text = "District Science Centre, Purulia";
+      const typingElement = document.getElementById('typingText');
+      const cursorElement = document.getElementById('typingCursor');
+      let index = 0;
+      let isDeleting = false;
+
+      function typeEffect() {
+        if (!isDeleting) {
+          if (index < text.length) {
+            typingElement.textContent = text.substring(0, index + 1);
+            index++;
+            setTimeout(typeEffect, 80 + Math.random() * 40);
+          } else {
+            setTimeout(() => {
+              isDeleting = true;
+              setTimeout(typeEffect, 300);
+            }, 2500);
+          }
+        } else {
+          if (index > 0) {
+            typingElement.textContent = text.substring(0, index - 1);
+            index--;
+            setTimeout(typeEffect, 40 + Math.random() * 30);
+          } else {
+            isDeleting = false;
+            setTimeout(typeEffect, 500);
+          }
+        }
+      }
+      setTimeout(typeEffect, 600);
+
+      // ===== TOAST NOTIFICATION =====
+      function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        // Force reflow
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 5000);
+      }
+
+      // ===== SCROLL REVEAL =====
+      const revealElements = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      revealElements.forEach(el => revealObserver.observe(el));
+
+      // ===== MAGNETIC BUTTON =====
+      const magneticBtn = document.querySelector('.magnetic-btn');
+      if (magneticBtn) {
+        magneticBtn.addEventListener('mousemove', (e) => {
+          const rect = magneticBtn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          magneticBtn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        magneticBtn.addEventListener('mouseleave', () => {
+          magneticBtn.style.transform = 'translate(0px, 0px)';
+        });
+      }
+
+      // ===== TILT CARD =====
+      const tiltCard = document.querySelector('.tilt-card');
+      if (tiltCard) {
+        tiltCard.addEventListener('mousemove', (e) => {
+          const rect = tiltCard.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+          tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        tiltCard.addEventListener('mouseleave', () => {
+          tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+      }
+
+      // ===== FORM SUBMISSION =====
+      const form = document.getElementById('registrationForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const msgDiv = document.getElementById('formMessage');
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const district = document.getElementById('district').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const profession = document.getElementById('profession').value.trim();
+        const family = document.getElementById('family').value.trim();
+
+        // Validate all fields
+        if (!name || !state || !district || !mobile || !email || !profession || !family) {
+          msgDiv.innerHTML = '<span class="text-yellow-400 text-sm"><i class="fas fa-exclamation-triangle mr-1"></i> Please fill in all fields.</span>';
+          showToast('Please fill in all fields', 'error');
+          return;
+        }
+
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          msgDiv.innerHTML = '<span class="text-yellow-400 text-sm"><i class="fas fa-exclamation-triangle mr-1"></i> Please enter a valid email address.</span>';
+          showToast('Please enter a valid email address', 'error');
+          return;
+        }
+
+        // Validate mobile (basic)
+        const mobileRegex = /^[0-9+\-\s()]{10,15}$/;
+        if (!mobileRegex.test(mobile)) {
+          msgDiv.innerHTML = '<span class="text-yellow-400 text-sm"><i class="fas fa-exclamation-triangle mr-1"></i> Please enter a valid mobile number.</span>';
+          showToast('Please enter a valid mobile number', 'error');
+          return;
+        }
+
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Submitting...';
+        msgDiv.innerHTML = '';
+
+        // Prepare data
+        const payload = {
+          name,
+          state,
+          district,
+          mobile,
+          email,
+          profession,
+          family,
+          timestamp: new Date().toLocaleString()
+        };
+
+try {
+          // Send data to Google Sheets
+          const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'cors', 
+            headers: {
+              // Changed to text/plain to bypass the browser's CORS preflight block
+              'Content-Type': 'text/plain', 
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          if (result.success) {
+            msgDiv.innerHTML = `<span class="text-green-400 text-sm"><i class="fas fa-check-circle mr-1"></i> ${result.message}</span>`;
+            showToast('✅ Registration submitted successfully!', 'success');
+            form.reset();
+          } else {
+            throw new Error(result.message || 'Submission failed');
+          }
+        } catch (error) {
+          console.error('Submission error:', error);
+          msgDiv.innerHTML = `<span class="text-red-400 text-sm"><i class="fas fa-times-circle mr-1"></i> ${error.message || 'Submission failed. Please try again.'}</span>`;
+          showToast('❌ ' + (error.message || 'Submission failed. Please try again.'), 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Details';
+        }
+      });
+
+      // ===== CHECK IF SCRIPT_URL IS CONFIGURED =====
+      if (SCRIPT_URL === 'YOUR_NEW_WEB_APP_URL_GOES_HERE' || SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
+        console.warn('⚠️ Please update SCRIPT_URL with your Google Apps Script Web App URL');
+        showToast('⚠️ Please configure the Google Sheets connection URL', 'info');
+      }
+    });
+  </script>
+</body>
+</html>
